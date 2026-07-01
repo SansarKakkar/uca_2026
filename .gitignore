@@ -1,0 +1,21 @@
+# Logs
+*.log
+*.swp
+*.swo
+*.swn
+# Dependency folders
+node_modules/
+
+# Environment variables
+.env
+
+# VS Code settings
+.vscode/
+
+# Build folders
+dist/
+build/
+
+# OS files
+.DS_Store
+Thumbs.db
