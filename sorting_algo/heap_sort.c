@@ -29,60 +29,41 @@ void swap(int a[], int i, int j) {
   a[j] = temp;
 }
 
-void merge(int a[], int left, int mid, int right) {
-  int n1 = mid - left + 1;
-  int n2 = right - mid;
+void heapify(int arr[], int n, int i) {
+  int largest = i;
+  int left = 2 * i + 1;
+  int right = 2 * i + 2;
 
-  int L[n1], R[n2];
-
-  int i, j, k;
-
-  for (i = 0; i < n1; i++)
-    L[i] = a[left + i];
-
-  for (j = 0; j < n2; j++)
-    R[j] = a[mid + 1 + j];
-
-  i = 0;
-  j = 0;
-  k = left;
-
-  while (i < n1 && j < n2) {
-    if (L[i] <= R[j]) {
-      a[k] = L[i];
-      i++;
-    } else {
-      a[k] = R[j];
-      j++;
-    }
-    k++;
+  if (left < n && arr[left] > arr[largest]) {
+    largest = left;
   }
 
-  while (i < n1) {
-    a[k] = L[i];
-    i++;
-    k++;
+  if (right < n && arr[right] > arr[largest]) {
+    largest = right;
   }
 
-  while (j < n2) {
-    a[k] = R[j];
-    j++;
-    k++;
+  if (largest != i) {
+    int temp = arr[i];
+    arr[i] = arr[largest];
+    arr[largest] = temp;
+
+    heapify(arr, n, largest);
   }
 }
 
-void mergeSortHelper(int a[], int left, int right) {
-  if (left < right) {
-    int mid = left + (right - left) / 2;
+void heapSort(int arr[], int n) {
+  for (int i = n / 2 - 1; i >= 0; i--) {
+    heapify(arr, n, i);
+  }
 
-    mergeSortHelper(a, left, mid);
-    mergeSortHelper(a, mid + 1, right);
+  for (int i = n - 1; i > 0; i--) {
+    int temp = arr[0];
+    arr[0] = arr[i];
+    arr[i] = temp;
 
-    merge(a, left, mid, right);
+    heapify(arr, i, 0);
   }
 }
-
-void mergeSort(int a[], int n) { mergeSortHelper(a, 0, n - 1); }
 
 void print(int a[], int s) {
   int i;
@@ -126,7 +107,7 @@ int main() {
     gettimeofday(&te, NULL);
     long long start = te.tv_sec * 1000LL + te.tv_usec / 1000;
 
-    mergeSort(a, size);
+    heapSort(a, size);
 
     gettimeofday(&te, NULL);
     long long end = te.tv_sec * 1000LL + te.tv_usec / 1000;

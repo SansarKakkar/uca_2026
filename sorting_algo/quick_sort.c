@@ -29,60 +29,33 @@ void swap(int a[], int i, int j) {
   a[j] = temp;
 }
 
-void merge(int a[], int left, int mid, int right) {
-  int n1 = mid - left + 1;
-  int n2 = right - mid;
+int partition(int a[], int low, int high) {
+  int pivot = a[high];
+  int i = low - 1;
+  int j;
 
-  int L[n1], R[n2];
-
-  int i, j, k;
-
-  for (i = 0; i < n1; i++)
-    L[i] = a[left + i];
-
-  for (j = 0; j < n2; j++)
-    R[j] = a[mid + 1 + j];
-
-  i = 0;
-  j = 0;
-  k = left;
-
-  while (i < n1 && j < n2) {
-    if (L[i] <= R[j]) {
-      a[k] = L[i];
+  for (j = low; j < high; j++) {
+    if (a[j] < pivot) {
       i++;
-    } else {
-      a[k] = R[j];
-      j++;
+      swap(a, i, j);
     }
-    k++;
   }
 
-  while (i < n1) {
-    a[k] = L[i];
-    i++;
-    k++;
-  }
+  swap(a, i + 1, high);
 
-  while (j < n2) {
-    a[k] = R[j];
-    j++;
-    k++;
+  return i + 1;
+}
+
+void quickSortHelper(int a[], int low, int high) {
+  if (low < high) {
+    int pi = partition(a, low, high);
+
+    quickSortHelper(a, low, pi - 1);
+    quickSortHelper(a, pi + 1, high);
   }
 }
 
-void mergeSortHelper(int a[], int left, int right) {
-  if (left < right) {
-    int mid = left + (right - left) / 2;
-
-    mergeSortHelper(a, left, mid);
-    mergeSortHelper(a, mid + 1, right);
-
-    merge(a, left, mid, right);
-  }
-}
-
-void mergeSort(int a[], int n) { mergeSortHelper(a, 0, n - 1); }
+void quickSort(int a[], int n) { quickSortHelper(a, 0, n - 1); }
 
 void print(int a[], int s) {
   int i;
@@ -126,7 +99,7 @@ int main() {
     gettimeofday(&te, NULL);
     long long start = te.tv_sec * 1000LL + te.tv_usec / 1000;
 
-    mergeSort(a, size);
+    quickSort(a, size);
 
     gettimeofday(&te, NULL);
     long long end = te.tv_sec * 1000LL + te.tv_usec / 1000;
