@@ -3,8 +3,7 @@
 *.swp
 *.swo
 *.swn
-# Dependency folders
-node_modules/
+*.class
 
 # Environment variables
 .env
@@ -19,3 +18,8 @@ build/
 # OS files
 .DS_Store
 Thumbs.db
+#executable
+main_app
+a.out
+auditlog
+
